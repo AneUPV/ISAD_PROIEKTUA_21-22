@@ -85,5 +85,14 @@ class StravaAPIKud:
         return self.http.request('GET', self.host + "/athlete", None, goiburuak)
 
     @tojson
-    def getActivities(self,id,include_all_efforts=False,goiburuak={}):
+    def getActivities(self,before=None,after=None,page=None,per_page=None, goiburuak={}):
+        hiztegia={}
+        if(before!=None):
+            hiztegia["before"]=before
+
+        return self.http.request('GET', self.host + "/activities", hiztegia, goiburuak)
+
+    @tojson
+    def getActivities_id(self,id,include_all_efforts=False,goiburuak={}):
         return self.http.request('GET', self.host + "/activities/"+str(id), {"include_all_efforts": include_all_efforts}, goiburuak)
+

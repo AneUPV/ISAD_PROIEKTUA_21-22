@@ -83,3 +83,7 @@ class StravaAPIKud:
     @tojson
     def getAthlete(self, goiburuak={}):
         return self.http.request('GET', self.host + "/athlete", None, goiburuak)
+
+    @tojson
+    def getActivities(self,id,include_all_efforts=False,goiburuak={}):
+        return self.http.request('GET', self.host + "/activities/"+str(id), {"include_all_efforts": include_all_efforts}, goiburuak)

@@ -80,19 +80,29 @@ class StravaAPIKud:
 
         return wrapper
 
+# ------------------------------------------------------------------------------------------
+#1. /athlete
     @tojson
     def getAthlete(self, goiburuak={}):
         return self.http.request('GET', self.host + "/athlete", None, goiburuak)
-
+# ------------------------------------------------------------------------------------------
+#2. /athlete/activities
     @tojson
-    def getActivities(self,before=None,after=None,page=None,per_page=None, goiburuak={}):
-        hiztegia={}
+    def getActivities(self,before=None , after=None , page=None, per_page=None, goiburuak={}):
+        hiztegia={}       #hashmap-a bezalakoa
         if(before!=None):
             hiztegia["before"]=before
 
-        return self.http.request('GET', self.host + "/activities", hiztegia, goiburuak)
+        return self.http.request('GET', self.host + "/athlete/activities", hiztegia, goiburuak)
 
+# ------------------------------------------------------------------------------------------
+#3./activities/%id
     @tojson
     def getActivities_id(self,id,include_all_efforts=False,goiburuak={}):
         return self.http.request('GET', self.host + "/activities/"+str(id), {"include_all_efforts": include_all_efforts}, goiburuak)
 
+#------------------------------------------------------------------------------------------
+#4./activities/%id/streams
+    @tojson
+    def getActivities_id_streams(self, id, keys=[], key_by_type=True, goiburuak={}):
+        return self.http.request('GET', self.host + "/activities/" + str(id) +"/streams", keys=key_by_type)

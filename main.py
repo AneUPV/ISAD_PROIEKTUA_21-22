@@ -12,7 +12,9 @@ if __name__ == '__main__':
     ema=stravaApiKud.getActivities()
     id=ema[1]["id"]
     #3. /activities/%id
-#   print(stravaApiKud.getActivities_id(id))
-    #4. /activities/%id/streams
-    print(stravaApiKud.getActivities_id_streams(id))
+    print("3.ARIKETA")
+    print(stravaApiKud.getActivities_id(id).keys())
+    #4. /activities/%id/streams                                        #type eta data gorde
+    print("4.ARIKETA")
+    print(stravaApiKud.getActivities_id_streams(id).keys())
 

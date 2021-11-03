@@ -120,7 +120,7 @@ class StravaAPIKud:
     @tojson
     def getActivities_id_streams(self, id, keys=["time", "distance", "latlng", "velocity_smooth", "heartrate", "cadence","watts", "temp", "moving", "grade_smooth"], key_by_type=True, goiburuak={}):
         hiztegia={}
-        hiztegia["keys"]=','.join(keys)
+        hiztegia["keys"]=','.join(keys)  #crear String formado por los elementos del array separedos con comas: "elem1, elem2, elem3, ..."
         hiztegia["key_by_type"]=key_by_type
 
         return self.http.request('GET', self.host + "/activities/" + str(id) +"/streams",hiztegia, goiburuak)

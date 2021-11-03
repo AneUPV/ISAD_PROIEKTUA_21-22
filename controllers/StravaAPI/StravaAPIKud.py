@@ -1,6 +1,5 @@
 import json
 import sys
-
 import time
 import urllib3
 import webbrowser
@@ -81,6 +80,15 @@ class StravaAPIKud:
         return wrapper
 
 # ------------------------------------------------------------------------------------------
+# self=this de java, se refiere a nuestra propia cuenta
+# "goiburuak" guarda los encabezados del http
+#En los request HTTP hay 4 partes principales:
+    #1) Método: POST/GET
+    #2) URL: En nuestro caso activities/id ...
+    #3) Parámetros: Hiztegia, por ejemplo
+    #4) Encabezados: el método tojson es el que se encarga
+    #   de crear los encabezados para hacer el http request a Strava
+
 #1. /athlete
     @tojson
     def getAthlete(self, goiburuak={}):
@@ -88,10 +96,16 @@ class StravaAPIKud:
 # ------------------------------------------------------------------------------------------
 #2. /athlete/activities
     @tojson
-    def getActivities(self,before=None , after=None , page=None, per_page=None, goiburuak={}):
+    def getActivities(self,before=None ,after=None , page=None, per_page=None, goiburuak={}):
         hiztegia={}       #hashmap-a bezalakoa
         if(before!=None):
             hiztegia["before"]=before
+        if (after != None):
+            hiztegia["after"] = after
+        if (page != None):
+            hiztegia["page"] = page
+        if (before != None):
+            hiztegia["per_page"] = per_page
 
         return self.http.request('GET', self.host + "/athlete/activities", hiztegia, goiburuak)
 
@@ -99,10 +113,14 @@ class StravaAPIKud:
 #3./activities/%id
     @tojson
     def getActivities_id(self,id,include_all_efforts=False,goiburuak={}):
-        return self.http.request('GET', self.host + "/activities/"+str(id), {"include_all_efforts": include_all_efforts}, goiburuak)
+        return self.http.request('GET', self.host + "/activities/"+str(id), {"include_all_efforts": include_all_efforts},goiburuak)
 
 #------------------------------------------------------------------------------------------
 #4./activities/%id/streams
     @tojson
-    def getActivities_id_streams(self, id, keys=[], key_by_type=True, goiburuak={}):
-        return self.http.request('GET', self.host + "/activities/" + str(id) +"/streams", keys=key_by_type)
+    def getActivities_id_streams(self, id, keys=["time", "distance", "latlng", "velocity_smooth", "heartrate", "cadence","watts", "temp", "moving", "grade_smooth"], key_by_type=True, goiburuak={}):
+        hiztegia={}
+        hiztegia["keys"]=','.join(keys)
+        hiztegia["key_by_type"]=key_by_type
+
+        return self.http.request('GET', self.host + "/activities/" + str(id) +"/streams",hiztegia, goiburuak)

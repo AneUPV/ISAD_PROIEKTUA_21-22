@@ -1,0 +1,9 @@
+StravaConfig.json:
+
+1)En este .json ponemos nuestro ClientID y nuestro ClientSecret 
+para acceder a nuetsra cuenta
+
+2)El access_token y el refresh_token son los suyos (Mikel), para
+que nuestra cuenta tenga permisos para ver sus activities y 
+sus datos
+ 

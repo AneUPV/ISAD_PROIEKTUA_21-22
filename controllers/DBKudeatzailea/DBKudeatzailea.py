@@ -148,9 +148,6 @@ class DBKudeatzailea:
     #Stravako API-tik datuak hartu eta DB-ra kargatu
     def datuakKargatu(self):
 
-        #Lehenik eta behin, DB-an taulak sortuko ditugu
-        self.taulakSortu()
-
         #Stravako API-ra konektatu
         stravaApiKud.getAccessToTheAPI()
 

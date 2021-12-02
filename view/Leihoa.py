@@ -25,6 +25,9 @@ class Leihoa():
         panel.pack()
         panel.place(width=220, height=250)
 
+        #Lehenik eta behin, DB-an taulak sortuko ditugu
+        dbk.taulakSortu()
+
         # -------------------------------------------------------------#
         #                           FRAMEAK                            #
         # -------------------------------------------------------------#

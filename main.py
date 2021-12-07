@@ -27,13 +27,13 @@ if __name__ == '__main__':
 #                   DEI LAGUNGARRIAK                           #
 # -------------------------------------------------------------#
 
-    #dbk=DBKudeatzailea()
+    dbk = DBKudeatzailea()
 
     #DB-ko taulak sortu
-    #dbk.taulakSortu()
+    dbk.taulakSortu()
 
     #Stravako API-tik datuak atera eta DB-an sartu
-    #dbk.datuakKargatu()
+    dbk.datuakKargatu()
 
 # -------------------------------------------------------------#
 #                   LEHIOAREN DEIA                             #

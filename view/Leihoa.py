@@ -17,6 +17,10 @@ class Leihoa():
         self.window.geometry('1050x562')
         self.window.resizable(False,False)
         self.window.title("Strava Hasiera")
+        self.taula=None
+
+        # Taulak sortu eta API-ko datuak DB-an kargatuko dira
+        #dbk.datuakKargatu()
 
         #Strava-ko logoa pantailaratzeko
         path = "view/strava.png"
@@ -24,9 +28,6 @@ class Leihoa():
         panel = tk.Label(self.window, image=img)
         panel.pack()
         panel.place(width=220, height=250)
-
-        #Lehenik eta behin, DB-an taulak sortuko ditugu
-        dbk.taulakSortu()
 
         # -------------------------------------------------------------#
         #                           FRAMEAK                            #
@@ -51,6 +52,14 @@ class Leihoa():
         self.main_frame.pack()
 
         # -------------------------------------------------------------#
+        def limitSizeDay(*args):
+            value = dayValue.get()
+            value2 = dayValue2.get()
+            if len(value) > 10: dayValue.set(value[:10])
+            if len(value2) > 10: dayValue2.set(value2[:10])
+
+
+
 
         #Noiztik eremuaren formatua definitzen duen metodoa
         def noiztikFormatua(event):
@@ -98,10 +107,14 @@ class Leihoa():
         #Entrenamendu desberdinen mota lortu
         motak=dbk.motakLortu()
         motak.append("Guztiak")
+        dayValue = tk.StringVar()
+        dayValue.trace('w', limitSizeDay)
+        dayValue2 = tk.StringVar()
+        dayValue2.trace('w', limitSizeDay)
 
         #Entrenamenduko filtraketen noiztik eremua sortu
         noiztikLabel = tk.Label(self.filtraketaframe, text="Noiztik: ", borderwidth=10)
-        noiztikEntry = tk.Entry( self.filtraketaframe, justify=tk.LEFT, textvariable='noiztikEntry')
+        noiztikEntry = tk.Entry( self.filtraketaframe, justify=tk.LEFT, textvariable=dayValue)
 
         #Noiztik formatua zehazteko metodoaren deia
         noiztikEntry.bind("<Key>", noiztikFormatua)
@@ -109,7 +122,7 @@ class Leihoa():
 
         #Entrenamenduko filtraketen nora eremua sortu
         noraLabel = tk.Label(self.filtraketaframe, text="Nora: ", borderwidth=10)
-        noraEntry = tk.Entry( self.filtraketaframe, justify=tk.LEFT, textvariable='noraEntry')
+        noraEntry = tk.Entry( self.filtraketaframe, justify=tk.LEFT, textvariable=dayValue2)
 
         #Nora formatua zehazteko metodoaren deia
         noraEntry.bind("<Key>", noraFormatua)
@@ -194,13 +207,17 @@ class Leihoa():
                             min = int(mugimenduDenb) // 60
                             s = int(mugimenduDenb) % 60
                             h=0
-                            if min > 60:
+                            if min >= 60:
                                 h = int(min) // 60
                                 min = int(min) % 60
                             datuak2.append(str(h) + "h "+str(min) + "min " + str(s) + "s")
                         if zutabe ==3:
                             datuak2.append(mota)
                 datuak.append(datuak2)
+
+
+        if (self.taula!=None):   #Treeview ezabatzeko
+            self.taula.destroy()
 
         #TreeView-a sortu
         self.taula = ttk.Treeview(self.main_frame, columns=(0, 1, 2, 3), show='headings')

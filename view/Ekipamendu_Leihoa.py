@@ -49,7 +49,7 @@ class Ekipamendu_Leihoa:
 
         #TreeView-eko bista aldatu
         s = ttk.Style()
-        s.configure('Treeview', rowheight=65)
+        s.configure('Treeview', rowheight=45)
         s.configure("Treeview.Heading", font=('Helvetica', 9))
         s.configure("Treeview", font=('Helvetica', 9))
 

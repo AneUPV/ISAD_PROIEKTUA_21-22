@@ -16,9 +16,10 @@ class Entrenamendu_Datuak():
     def __init__(self,entrenamendua):
 
         self.window = tk.Toplevel()
-        self.window.geometry('800x700')
+        self.window.geometry('1200x700')
         self.window.title("Entrenamendu Datuak")
-
+        self.bueltaktaula = None
+        self.bueltaInfo = None
         #Leihoaren scroll-a sortu
         scroll = ScrollContainer(self.window)
         self.main_frame = scroll.second_frame
@@ -194,11 +195,11 @@ class Entrenamendu_Datuak():
         y.pack()
 
         #Y ardatzako botoiak jarri
-        kadentziaB.pack()
-        aldapaB.pack()
-        pultsazioakB.pack()
-        mugitzenB.pack()
-        abiaduraB.pack()
+        kadentziaB.pack(expand=True)
+        aldapaB.pack(expand=True)
+        pultsazioakB.pack(expand=True)
+        mugitzenB.pack(expand=True)
+        abiaduraB.pack(expand=True)
 
         #X ardatzaren Label-a sortu
         x = tk.Label(self.grafikoAukerak, text="X", borderwidth=10, width=20)
@@ -225,6 +226,10 @@ class Entrenamendu_Datuak():
         # -------------------------------------------------------------#
         #                      BUELTAK                                 #
         # -------------------------------------------------------------#
+
+        if(self.bueltaktaula!=None):
+            self.bueltaktaula.destroy()
+
 
         #Entrenamendu baten buelten informazioa eta aukerak eramango duen Frame-a sortu
         self.bueltaktaula=tk.LabelFrame(self.main_frame, text="Bueltak (LAP)")
@@ -269,7 +274,8 @@ class Entrenamendu_Datuak():
         bbAbiaduraCheck.grid(row=0, column=5)
         bbAbiaduraCheck.select()
 
-        self.bueltaInfo = None
+        if (self.bueltaInfo!=None):
+            self.bueltaInfo.destroy()
 
         #Buelten informazioa inprimatzen duen metodoaren deia
         self.bueltakInprimatu(entrenamendua)
@@ -323,19 +329,15 @@ class Entrenamendu_Datuak():
         #X Ardatza lortu (RadioButton-eko balioak hartu)
         if (self.radioValue.get()==0):                  #Distantzia aukeratu da
             xbalioa="Distantzia"
-
-            #Distantzia neurketak lortu
+            # Distantzia neurketak lortu
             xZer=dbk.neurketakLortu("distance", id)
         else:                                           #Denbora aukeratu da
             xbalioa = "Denbora"
-
             #Denbora neurketak lortu
             xZer=dbk.neurketakLortu("time", id)
-
         # Y Ardatza lortu (CheckButton-eko balioak hartu)
         yZer=dbk.neurketakLortu(str(self.checkValue.get()), id)
 
-        #Neurketa bateko datuak falta badira ez inprimatu ezer
         if (len(yZer)<=0):
             xZer=[0]
             yZer=[0]
@@ -347,11 +349,32 @@ class Entrenamendu_Datuak():
         # Figura eta Axis-a sortu
         fig = plt.Figure(figsize=(9, 4), dpi=80, tight_layout=True)
         ax = fig.add_subplot(111)
+
         mapeado = range(len(xZer))
+
+#X ARDATZAK
+
+        #FUNTZIOAK:
+        def funcKm(x, y):
+            return f"{x / 1000:.1f} km"
+
+        def funcSegundu(x, y):
+            h = x // 3600
+            min = (x - h * 3600) // 60
+            s = x - h * 3600 - min * 60
+            return f"{int(h)} h {int(min)}' {int(s)}'' "
+
+        ##############################################################
+        if (xbalioa == "Denbora"):
+            ax.xaxis.set_major_formatter(funcSegundu)
+
+        else: #Distantzia
+            ax.xaxis.set_major_formatter(funcKm)
 
         #Funtzioaren irudia sortu eta kolorea zehaztu
         ax.plot(xZer, yZer,  color="tab:blue")
-        plt.xticks(mapeado, yZer)
+        #plt.xticks([1, 2, 3,4 ,5 ,6], ["1", "2", "3", "4", "5", "6"], rotation="vertical" )
+        plt.xticks(mapeado, yZer, rotation="vertical")
 
         # Bi ardatzen izenak jarri
         ax.set_xlabel(xbalioa)
@@ -362,6 +385,7 @@ class Entrenamendu_Datuak():
         canvas.draw()
         canvas.get_tk_widget().pack(side=tk.TOP, expand=1)
 
+
     # -------------------------------------------------------------#
 
     #Bueltak inprimatzen dituen funtzioa
@@ -369,8 +393,7 @@ class Entrenamendu_Datuak():
 
         #Buelten informazioko TreeView bat jada existitzen den begiratu (Existitzen bada ezabatu)
         if self.bueltaInfo != None :
-            for i in self.bueltaInfo.get_children():
-                self.bueltaInfo.delete(i)
+                self.bueltaInfo.destroy()
 
         #Buelten informazioa bistaratzen duen TreeView-a sortu
         self.bueltaInfo = ttk.Treeview(self.main_frame2, columns=(0, 1, 2, 3, 4, 5), show='headings')

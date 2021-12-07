@@ -1,10 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 
+
 class ScrollContainer(ttk.Frame):
-
     def __init__(self, container, w=None, h=None, *args, **kwargs):
-
         super().__init__(container, *args, **kwargs)
         container.bind("<MouseWheel>", self._on_mousewheel) # bind on the parent window
 

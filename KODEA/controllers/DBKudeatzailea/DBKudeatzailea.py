@@ -369,20 +369,20 @@ class DBKudeatzailea:
         if len(noiztik)>0:
             if len(nora)>0:
                 if mota!="Guztiak":         #Noiztik, nora eta mota (Guztira ez) beteta
-                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE noiz >= %s AND noiz <= %s AND mota = %s ORDER BY noiz DESC;", (noiztik,nora,mota))
+                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE DATE(noiz) >= %s AND DATE(noiz) <= %s AND mota = %s ORDER BY noiz DESC;", (noiztik,nora,mota))
                 else:                       #Noiztik, nora eta mota (Guztira bai) beteta
-                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE noiz >= %s AND noiz <= %s ORDER BY noiz DESC;", (noiztik,nora))
+                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE DATE(noiz) >= %s AND DATE(noiz) <= %s ORDER BY noiz DESC;", (noiztik,nora))
             else:
                 if mota!="Guztiak":         #Noiztik eta mota (Guztira ez) beteta
-                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE noiz >= %s AND mota = %s ORDER BY noiz DESC;", (noiztik,mota))
+                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE DATE(noiz) >= %s AND mota = %s ORDER BY noiz DESC;", (noiztik,mota))
                 else:                       #Noiztik eta mota (Guztira bai) beteta
-                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE noiz >= %s ORDER BY noiz DESC;", (noiztik,))
+                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE DATE(noiz) >= %s ORDER BY noiz DESC;", (noiztik,))
         else:
             if len(nora)>0:                 #Nora eta mota (Guztira ez) beteta
                 if mota!="Guztiak":
-                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE noiz <= %s AND mota = %s ORDER BY noiz DESC;", (nora,mota))
+                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE DATE(noiz) <= %s AND mota = %s ORDER BY noiz DESC;", (nora,mota))
                 else:                       #Nora eta mota (Guztira bai) beteta
-                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE noiz <= %s ORDER BY noiz DESC;", (nora,))
+                    self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE DATE(noiz) <= %s ORDER BY noiz DESC;", (nora,))
             else:
                 if mota != "Guztiak":       #Mota (Guztira ez) beteta
                     self.kurtsorea.execute("SELECT * FROM entrenamendua WHERE mota = %s ORDER BY noiz DESC;", (mota,))

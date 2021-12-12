@@ -177,6 +177,8 @@ class Leihoa():
     def mezuDatuakKargatu(self):
 
         x=dbk.datuakKargatu()
+        # Entrenamenduen filtraketa gauzatzen duen metodoaren deia (1.Deia, entrenamendu guztiak inprimatu)
+        self.filtraketaErakutsi('', '', "Guztiak")
         print(messagebox.showinfo(message="Tupla eguneratuak:"+str(x)+"", title="Eguneraketa"))
 
     # -------------------------------------------------------------#
